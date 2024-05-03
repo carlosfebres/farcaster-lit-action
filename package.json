@@ -1,0 +1,25 @@
+{
+  "name": "lit-action-farcaster",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test:encryption": "node lit_actions/scripts/decrypt.js",
+    "build:action": "getlit build",
+    "run:cli": "ts-node src/cli/main"
+  },
+  "dependencies": {
+    "@farcaster/auth-client": "^0.1.1",
+    "@lit-protocol/lit-node-client-nodejs": "^5.0.0",
+    "commander": "^12.0.0",
+    "neverthrow": "^6.1.0",
+    "siwe": "^2.1.4",
+    "viem": "2.9.31"
+  },
+  "devDependencies": {
+    "ethers": "5.7.2",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
