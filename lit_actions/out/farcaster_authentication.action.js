@@ -54777,14 +54777,13 @@ var appClient = createAppClient(
   },
   void 0,
 );
-
 var verifyFarcasterSignature = async (domain, nonce, message, signature) => {
   try {
     const { fid, success, isError, error } =
       await appClient.verifySignInMessage({
         domain,
         nonce,
-        message,
+        message: decodeURIComponent(message),
         signature,
       });
     if (!success || isError) {

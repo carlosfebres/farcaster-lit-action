@@ -2,12 +2,12 @@ const LitJsSdk = require("@lit-protocol/lit-node-client-nodejs");
 const { getAuthSig } = require("./utils.js");
 
 const test = {
+  fid: "402788",
   domain: "localhost:3000",
-  nonce: "aX66seBsxa2u0LIkp",
+  nonce: "YzYwpIBrdsgg560f4",
   message:
-    "localhost:3000 wants you to sign in with your Ethereum account:\n0x3df6470a3d8Eb27D4195c22819ecCf5e4B264850\n\nFarcaster Auth\n\nURI: http://localhost:3000/\nVersion: 1\nChain ID: 10\nNonce: aX66seBsxa2u0LIkp\nIssued At: 2024-05-02T08:14:34.184Z\nResources:\n- farcaster-min://fid/402788",
-  signature:
-    "0xabcd",
+    "localhost:3000 wants you to sign in with your Ethereum account:\n0x3df6470a3d8Eb27D4195c22819ecCf5e4B264850\n\nFarcaster Auth\n\nURI: http://localhost:3000/\nVersion: 1\nChain ID: 10\nNonce: YzYwpIBrdsgg560f4\nIssued At: 2024-05-08T00:42:28.461Z\nResources:\n- farcaster://fid/402788",
+  signature: "0xabcd",
 };
 
 const runTest = async () => {
@@ -27,14 +27,19 @@ const runTest = async () => {
   // create your access control conditions.  Note that the contractAddress is an IPFS hash of the file at /ipfsCode/checkWeather.js.  We pass the param of "100" to the go() function in the Lit Action Code.
   const accessControlConditions = [
     {
-      contractAddress: "ipfs://QmYTqnkgeUSRuB6Teu9ZJSJBuwgAYZXiVdgvSBUFvcB7UK",
+      contractAddress: "ipfs://QmV3puT6hRwvJ9iPjJqUDPYrXWdFdWfhBnxu3yrcCG91MN",
       standardContractType: "LitAction",
       chain: "ethereum",
       method: "verifyFarcasterSignature",
-      parameters: [test.domain, test.nonce, test.message, test.signature],
+      parameters: [
+        test.domain,
+        test.nonce,
+        encodeURIComponent(test.message),
+        test.signature,
+      ],
       returnValueTest: {
         comparator: "=",
-        value: "402788",
+        value: test.fid,
       },
     },
   ];
@@ -49,17 +54,20 @@ const runTest = async () => {
     },
     litNodeClient,
   );
+
+  console.log("ciphertext raw", ciphertext);
+  console.log("dataToEncryptHash", dataToEncryptHash);
   console.log("ciphertext ", LitJsSdk.uint8arrayToString(ciphertext, "base16"));
 
   console.log("Data encrypted.  Now to decrypt it.");
 
   const decryptedString = await LitJsSdk.decryptToString(
     {
-      chain: "ethereum",
-      accessControlConditions,
+      chain: "ethereum", // chain field is required but nothing lives there
+      authSig,
       ciphertext,
       dataToEncryptHash,
-      authSig,
+      accessControlConditions,
     },
     litNodeClient,
   );
