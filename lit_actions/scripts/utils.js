@@ -1,9 +1,12 @@
+require("dotenv").config();
+
 const { ethers } = require("ethers");
+
 const siwe = require("siwe");
 
 const getAuthSig = async () => {
   // put your private key into this env var
-  const privateKey = process.env.LIT_ROLLUP_MAINNET_DEPLOYER_PRIVATE_KEY;
+  const privateKey = process.env.LIT_WALLET_PRIVATE_KEY;
   const wallet = new ethers.Wallet(privateKey);
   const address = await wallet.getAddress();
 
@@ -34,9 +37,4 @@ const getAuthSig = async () => {
   };
 };
 
-const getPkp = async () => {
-  // put a PKP public key here
-  return "0x04a2ceb04fd1fb86804615bfeab2236edba5891c7f4a8586b64fc27c160a48b57d56028f9160b4d17f89331145a5552d5a380a1dca70cae3c32cf0e0e64e63a3e6";
-};
-
-module.exports = { getAuthSig, getPkp };
+module.exports = { getAuthSig };
