@@ -12,7 +12,7 @@ const config = {
   domain: "localhost:3000",
   litNetwork: "habanero",
   litActionHash: "QmV3puT6hRwvJ9iPjJqUDPYrXWdFdWfhBnxu3yrcCG91MN",
-  capacityTokenId: 1269,
+  capacityTokenId: "1269",
 };
 
 async function getSessionSigs(litNodeClient) {
